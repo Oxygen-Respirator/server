@@ -9,6 +9,10 @@ spring:
     hikari:
       max-lifetime: 55000
 
+  security:
+    user:
+      name: admin
+      password: oxygen!@#qwerty
 
 
   jpa:
