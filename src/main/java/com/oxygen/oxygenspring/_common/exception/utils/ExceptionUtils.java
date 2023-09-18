@@ -3,7 +3,7 @@ package com.oxygen.oxygenspring._common.exception.utils;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
-import com.oxygen.oxygenspring._common.exception.errorCode.ResponseCode;
+import com.oxygen.oxygenspring._common.exception.responseCode.ResponseCode;
 import com.oxygen.oxygenspring._common.response.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;

@@ -1,24 +1,90 @@
 package com.oxygen.oxygenspring.config.security;
 
+import com.oxygen.oxygenspring.domain.user.jwt.entry_point.CustomAuthenticationEntryPoint;
+import com.oxygen.oxygenspring.domain.user.jwt.filter.JwtAuthenticationFilter;
+import com.oxygen.oxygenspring.domain.user.jwt.handler.JwtTokenAccessDeniedHandler;
+import com.oxygen.oxygenspring.domain.user.jwt.provider.JwtAuthTokenProvider;
+import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.BeanIds;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
+
+    private final JwtAuthTokenProvider jwtAuthTokenProvider;
+    private final JwtTokenAccessDeniedHandler jwtTokenAccessDeniedHandler;
+
+
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return web -> web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.httpBasic().disable() // 기본 인증 비활성화
-                .formLogin().disable() // 기본 로그인 폼 비활성화
-                .csrf().disable() // csrf 보안토큰 비활성화
-                .sessionManagement().disable(); // 세션 유저 관리 비활성화 (세션 사용 시 별도 구현 필요)
+        http.httpBasic().disable()
+                .formLogin().disable()
+                .csrf().disable()
+                .sessionManagement().disable()
+                .cors().configurationSource(corsConfigurationSource())
+                .and()
+                .exceptionHandling()
+                .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
+                .accessDeniedHandler(jwtTokenAccessDeniedHandler);
 
-        http.authorizeHttpRequests().anyRequest().permitAll();
+        http.authorizeHttpRequests()
+                .requestMatchers("/").permitAll()
+                .requestMatchers("/api/user/**").permitAll()
+                .requestMatchers("/swagger-ui/**", "/api-docs/**").permitAll()
+                .anyRequest().authenticated();
+
+        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
+    }
+
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("http://101.101.208.192:43000", "https://101.101.208.192:43000"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
+        configuration.setAllowedHeaders(List.of("*"));
+        configuration.addExposedHeader("Authorization");
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
+
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean(BeanIds.AUTHENTICATION_MANAGER)
+    protected AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
+    }
+
+    @Bean
+    public JwtAuthenticationFilter jwtAuthenticationFilter() {
+        return new JwtAuthenticationFilter(jwtAuthTokenProvider);
     }
 }
