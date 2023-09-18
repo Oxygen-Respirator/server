@@ -1,7 +1,7 @@
 package com.oxygen.oxygenspring._common.exception;
 
 
-import com.oxygen.oxygenspring._common.exception.errorCode.ResponseCode;
+import com.oxygen.oxygenspring._common.exception.responseCode.ResponseCode;
 import lombok.Getter;
 
 @Getter

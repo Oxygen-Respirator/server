@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import com.oxygen.oxygenspring._common.exception.ApiException;
-import com.oxygen.oxygenspring._common.exception.errorCode.ResponseCode;
+import com.oxygen.oxygenspring._common.exception.responseCode.ResponseCode;
 import com.oxygen.oxygenspring._common.exception.utils.ExceptionUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
