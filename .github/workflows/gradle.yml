@@ -8,7 +8,7 @@
 name: Java CI with Gradle
 
 on:
-  pull_request:
+  push:
     branches: [ "main" ] # master로 PR시 Actions 작동
 
 jobs:
@@ -18,13 +18,16 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          token: ${{ secrets.SUBMODULE_TOKEN }}
+          token: ${{secrets.SUBMODULE_TOKEN}}
           submodules: true
 
       - name: Set up JDK 17
         uses: actions/setup-java@v1
         with:
           java-version: 17
+
+      - name: Run custom gradle task for copying yml
+        run: ./gradlew copyPrivate
 
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew

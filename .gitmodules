@@ -1,3 +1,4 @@
 [submodule "submodule-data"]
 	path = submodule-data
-	url = git@github.com-ojy9612:Oxygen-Respirator/submodule-data.git
+	url = https://github.com/Oxygen-Respirator/submodule-data.git
+	branch = main
