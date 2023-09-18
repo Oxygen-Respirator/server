@@ -23,7 +23,7 @@ jobs:
 
       - name: submodules update
         run: |
-          git submodule --remote
+          git submodule update --remote
           git submodule foreach git pull
 
       - name: Set up JDK 17
