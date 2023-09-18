@@ -8,7 +8,7 @@
 name: Java CI with Gradle
 
 on:
-  pull_request:
+  push:
     branches: [ "main" ] # master로 PR시 Actions 작동
 
 jobs:
@@ -31,7 +31,7 @@ jobs:
         shell: bash
 
       - name: Build with Gradle # JAVA 빌드 후 자동으로 TEST 코드를 실행하게 되있으니
-        run: ./gradlew build # OMS DB사용시 ip허용이 안돼서 에러날 수 있음 (github 원격서버에서 실행되므로)
+        run: ./gradlew build --scan # OMS DB사용시 ip허용이 안돼서 에러날 수 있음 (github 원격서버에서 실행되므로)
         shell: bash # 현 프로젝트는 @SpringBootTest 제거 후 빌드 함.
 
       # https://github.com/docker/build-push-action
