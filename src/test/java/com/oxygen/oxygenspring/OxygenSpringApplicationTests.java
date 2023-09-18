@@ -1,9 +1,12 @@
 package com.oxygen.oxygenspring;
 
-//@SpringBootTest
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
 class OxygenSpringApplicationTests {
 
-    //    @Test
+    @Test
     void contextLoads() {
     }
 

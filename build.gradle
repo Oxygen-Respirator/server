@@ -46,6 +46,9 @@ dependencies {
 
     // swagger
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0'
+
+    // hibernate validator
+    implementation 'org.hibernate.validator:hibernate-validator'
 }
 
 test {
@@ -60,4 +63,13 @@ clean {
 
 tasks.withType(JavaCompile).configureEach {
     options.generatedSourceOutputDirectory = file(querydslSrcDir)
+}
+
+// submodule
+tasks.register('copyPrivate', Copy) {
+    copy {
+        from './submodule-data'
+        include '*.yml'
+        into 'src/main/resources'
+    }
 }

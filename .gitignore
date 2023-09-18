@@ -39,3 +39,4 @@ out/
 ### custom ###
 ./mysql
 ./docker-compose.yml
+*.yml
