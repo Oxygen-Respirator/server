@@ -21,10 +21,8 @@ jobs:
           token: ${{secrets.SUBMODULE_TOKEN}}
           submodules: true
 
-      - name: submodules update
-        run: |
-          git submodule update --remote
-          git submodule foreach git pull
+      - name: Run custom gradle task for copying yml
+        run: ./gradlew copyPrivate
 
       - name: Set up JDK 17
         uses: actions/setup-java@v1
