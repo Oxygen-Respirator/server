@@ -40,5 +40,5 @@ out/
 ./mysql
 ./docker-compose.yml
 *.yml
-/submodule-data/
+/submodule-data/.idea/
 /logs/
