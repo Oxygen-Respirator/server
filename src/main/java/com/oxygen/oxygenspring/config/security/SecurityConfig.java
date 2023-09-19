@@ -65,7 +65,8 @@ public class SecurityConfig {
         http.authorizeHttpRequests(a -> a
                         .requestMatchers("/").permitAll()
                         .requestMatchers("/api/user/**").permitAll()
-                        .requestMatchers(PERMIT_URL_ARRAY).permitAll())
+                        .requestMatchers(PERMIT_URL_ARRAY).permitAll()
+                        .anyRequest().authenticated())
                 .exceptionHandling()
                 .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
                 .accessDeniedHandler(jwtTokenAccessDeniedHandler);
