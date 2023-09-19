@@ -36,7 +36,7 @@ public class SwaggerConfig {
                 .addSecurityItem(securityRequirement)
                 .components(components);
 
-        Server prodServer = new Server().url("http://api.oxygen-ai.site")
+        Server prodServer = new Server().url("https://api.oxygen-ai.site")
                 .description("운영 서버");
 
         Server localServer = new Server().url("http://localhost:8080")
