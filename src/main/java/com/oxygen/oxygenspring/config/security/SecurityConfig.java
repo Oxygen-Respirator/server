@@ -44,11 +44,13 @@ public class SecurityConfig {
                 .formLogin().disable()
                 .csrf().disable()
                 .sessionManagement().disable()
-                .cors().configurationSource(corsConfigurationSource());
+                .cors().configurationSource(corsConfigurationSource())
+                .and()
+                .headers().frameOptions().sameOrigin();
 
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
-        
+
         http.authorizeHttpRequests()
                 .requestMatchers("/").permitAll()
                 .requestMatchers("/api/user/**").permitAll()
