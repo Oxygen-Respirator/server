@@ -32,7 +32,7 @@ public class SecurityConfig {
 
     private static final String[] PERMIT_URL_ARRAY = {
             /* swagger v2 */
-            "/v2/api-docs",
+            "/api-docs",
             "/swagger-resources",
             "/swagger-resources/**",
             "/configuration/ui",
@@ -40,7 +40,7 @@ public class SecurityConfig {
             "/swagger-ui.html",
             "/webjars/**",
             /* swagger v3 */
-            "/v3/api-docs/**",
+            "/api-docs/**",
             "/swagger-ui/**"
     };
     private final JwtAuthTokenProvider jwtAuthTokenProvider;
@@ -57,9 +57,7 @@ public class SecurityConfig {
                 .formLogin().disable()
                 .sessionManagement().disable()
                 .csrf(AbstractHttpConfigurer::disable)
-                .cors().configurationSource(corsConfigurationSource())
-                .and()
-                .headers().frameOptions().sameOrigin();
+                .cors().configurationSource(corsConfigurationSource());
 
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
