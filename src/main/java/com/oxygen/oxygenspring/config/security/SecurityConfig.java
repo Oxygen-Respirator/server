@@ -14,6 +14,7 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -29,9 +30,21 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
+    private static final String[] PERMIT_URL_ARRAY = {
+            /* swagger v2 */
+            "/v2/api-docs",
+            "/swagger-resources",
+            "/swagger-resources/**",
+            "/configuration/ui",
+            "/configuration/security",
+            "/swagger-ui.html",
+            "/webjars/**",
+            /* swagger v3 */
+            "/v3/api-docs/**",
+            "/swagger-ui/**"
+    };
     private final JwtAuthTokenProvider jwtAuthTokenProvider;
     private final JwtTokenAccessDeniedHandler jwtTokenAccessDeniedHandler;
-
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
@@ -43,6 +56,7 @@ public class SecurityConfig {
         http.httpBasic().disable()
                 .formLogin().disable()
                 .sessionManagement().disable()
+                .csrf(AbstractHttpConfigurer::disable)
                 .cors().configurationSource(corsConfigurationSource())
                 .and()
                 .headers().frameOptions().sameOrigin();
@@ -50,11 +64,10 @@ public class SecurityConfig {
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
 
-        http.csrf().disable()
-                .authorizeHttpRequests(a -> a
+        http.authorizeHttpRequests(a -> a
                         .requestMatchers("/").permitAll()
                         .requestMatchers("/api/user/**").permitAll()
-                        .requestMatchers("/swagger-ui/**", "/api-docs/**", "/swagger-resources/**", "/webjars/**").permitAll())
+                        .requestMatchers(PERMIT_URL_ARRAY).permitAll())
                 .exceptionHandling()
                 .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
                 .accessDeniedHandler(jwtTokenAccessDeniedHandler);
