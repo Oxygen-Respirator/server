@@ -8,6 +8,8 @@ import lombok.extern.log4j.Log4j2;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Log4j2
 @RequiredArgsConstructor
@@ -24,9 +26,14 @@ public class JwtAuthToken {
     }
 
     private String createJwtAuthToken(String userId, String userNickname, Long expiry) {
+        Map<String, String> claims = new HashMap<>();
+
+        claims.put("userNickname", userNickname);
+        claims.put("userId", userId);
+
         return Jwts.builder()
-                .setSubject(userId)
-                .setSubject(userNickname)
+                .setClaims(claims)
+                .setSubject("user")
                 .signWith(key, SignatureAlgorithm.HS256)
                 .setExpiration(new Date(new Date().getTime() + expiry))
                 .compact();
