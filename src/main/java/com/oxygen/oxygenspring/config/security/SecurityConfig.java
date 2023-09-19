@@ -43,6 +43,8 @@ public class SecurityConfig {
         http.httpBasic().disable()
                 .formLogin().disable()
                 .sessionManagement().disable()
+                .cors().configurationSource(corsConfigurationSource())
+                .and()
                 .headers().frameOptions().sameOrigin();
 
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
@@ -52,13 +54,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(a -> a
                         .requestMatchers("/").permitAll()
                         .requestMatchers("/api/user/**").permitAll()
-                        .requestMatchers("/swagger-ui/**", "/api-docs/**", "/swagger-resources/**", "/webjars/**").permitAll()
-                        .anyRequest().authenticated())
+                        .requestMatchers("/swagger-ui/**", "/api-docs/**", "/swagger-resources/**", "/webjars/**").permitAll())
                 .exceptionHandling()
                 .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
-                .accessDeniedHandler(jwtTokenAccessDeniedHandler)
-                .and()
-                .cors().configurationSource(corsConfigurationSource());
+                .accessDeniedHandler(jwtTokenAccessDeniedHandler);
 
 
         return http.build();
