@@ -43,6 +43,6 @@ public class UserService {
             throw new ApiException(ResponseCode.INVALID_PASSWORD);
         }
 
-        return jwtAuthTokenProvider.createJwtAuthToken(requestDto.getUserId()).getToken();
+        return jwtAuthTokenProvider.createJwtAuthToken(requestDto.getUserId(), user.getUserNickname()).getToken();
     }
 }

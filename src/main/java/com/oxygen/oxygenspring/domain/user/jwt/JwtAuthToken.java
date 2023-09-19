@@ -18,14 +18,15 @@ public class JwtAuthToken {
     @Getter
     private final String token;
 
-    public JwtAuthToken(Key key, Long expiry, String secretKey) {
+    public JwtAuthToken(Key key, Long expiry, String userId, String userNickname) {
         this.key = key;
-        this.token = this.createJwtAuthToken(secretKey, expiry);
+        this.token = this.createJwtAuthToken(userId, userNickname, expiry);
     }
 
-    private String createJwtAuthToken(String secretKey, Long expiry) {
+    private String createJwtAuthToken(String userId, String userNickname, Long expiry) {
         return Jwts.builder()
-                .setSubject(secretKey)
+                .setSubject(userId)
+                .setSubject(userNickname)
                 .signWith(key, SignatureAlgorithm.HS256)
                 .setExpiration(new Date(new Date().getTime() + expiry))
                 .compact();

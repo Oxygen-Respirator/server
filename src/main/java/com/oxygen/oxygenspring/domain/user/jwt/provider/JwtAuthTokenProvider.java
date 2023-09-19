@@ -28,13 +28,10 @@ public class JwtAuthTokenProvider {
     }
 
     // token 생성
-    public JwtAuthToken createJwtAuthToken(String userId) {
-        return new JwtAuthToken(key, TOKEN_VALID_TIME, userId);
+    public JwtAuthToken createJwtAuthToken(String userId, String userNickname) {
+        return new JwtAuthToken(key, TOKEN_VALID_TIME, userId, userNickname);
     }
 
-    public JwtAuthToken convertRefreshToken(String token) {
-        return new JwtAuthToken(key, token);
-    }
 
     public JwtAuthToken convertAccessToken(HttpServletRequest request) {
         String accessToken = JwtHeaderUtil.getAccessToken(request);
