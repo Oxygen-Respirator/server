@@ -44,19 +44,21 @@ public class SecurityConfig {
                 .formLogin().disable()
                 .csrf().disable()
                 .sessionManagement().disable()
-                .cors().configurationSource(corsConfigurationSource())
+                .cors().configurationSource(corsConfigurationSource());
+
+        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+
+        
+        http.authorizeHttpRequests()
+                .requestMatchers("/").permitAll()
+                .requestMatchers("/api/user/**").permitAll()
+                .requestMatchers("/swagger-ui/**", "/api-docs/**").permitAll()
+                .anyRequest().authenticated()
                 .and()
                 .exceptionHandling()
                 .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
                 .accessDeniedHandler(jwtTokenAccessDeniedHandler);
 
-        http.authorizeHttpRequests()
-                .requestMatchers("/").permitAll()
-                .requestMatchers("/api/user/**").permitAll()
-                .requestMatchers("/swagger-ui/**", "/api-docs/**").permitAll()
-                .anyRequest().authenticated();
-
-        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

@@ -34,15 +34,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         JwtAuthToken token = tokenProvider.convertAccessToken(request);
 
         try {
-
-            if (token != null && token.tokenValidate()) {
-                Authentication authentication = tokenProvider.getAuthentication(token);
-                // SecurityContextHolder 에 인증 객체를 넣는다.
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-            } else {
-                throw new ApiException(ResponseCode.ACCESS_TOKEN_NOT_EXIST);
+            if (request.getHeader("Authorization") != null) {
+                if (token != null && token.tokenValidate()) {
+                    Authentication authentication = tokenProvider.getAuthentication(token);
+                    // SecurityContextHolder 에 인증 객체를 넣는다.
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                } else {
+                    throw new ApiException(ResponseCode.ACCESS_TOKEN_NOT_EXIST);
+                }
             }
-            
         } catch (SignatureException e) {
             log.info("잘못된 JWT 서명입니다.");
             request.setAttribute("exception", ResponseCode.WRONG_TYPE_SIGNATURE.getCode());
