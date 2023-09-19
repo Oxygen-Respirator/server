@@ -42,24 +42,23 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.httpBasic().disable()
                 .formLogin().disable()
-                .csrf().disable()
                 .sessionManagement().disable()
-                .cors().configurationSource(corsConfigurationSource())
-                .and()
                 .headers().frameOptions().sameOrigin();
 
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
 
-        http.authorizeHttpRequests()
-                .requestMatchers("/").permitAll()
-                .requestMatchers("/api/user/**").permitAll()
-                .requestMatchers("/swagger-ui/**", "/api-docs/**", "/swagger-resources/**", "/webjars/**").permitAll()
-                .anyRequest().authenticated()
-                .and()
+        http.csrf().disable()
+                .authorizeHttpRequests(a -> a
+                        .requestMatchers("/").permitAll()
+                        .requestMatchers("/api/user/**").permitAll()
+                        .requestMatchers("/swagger-ui/**", "/api-docs/**", "/swagger-resources/**", "/webjars/**").permitAll()
+                        .anyRequest().authenticated())
                 .exceptionHandling()
                 .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
-                .accessDeniedHandler(jwtTokenAccessDeniedHandler);
+                .accessDeniedHandler(jwtTokenAccessDeniedHandler)
+                .and()
+                .cors().configurationSource(corsConfigurationSource());
 
 
         return http.build();
