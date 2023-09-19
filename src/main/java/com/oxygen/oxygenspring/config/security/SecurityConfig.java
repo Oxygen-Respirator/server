@@ -77,7 +77,7 @@ public class SecurityConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://101.101.208.192:43000", "https://101.101.208.192:43000"));
+        configuration.setAllowedOrigins(Arrays.asList("http://101.101.208.192:43000", "https://101.101.208.192:43000", "https://api.oxygen-ai.site", "https://101.101.208.192:443"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.addExposedHeader("Authorization");
