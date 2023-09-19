@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/user")
-@Tag(name = "01. User", description = "회원관리 및 로그인")
+@Tag(name = "01. User", description = "회원가입 및 로그인")
 public class UserController {
 
     private final UserService userService;
