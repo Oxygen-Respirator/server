@@ -4,8 +4,9 @@ import com.oxygen.oxygenspring._common.exception.ApiException;
 import com.oxygen.oxygenspring._common.exception.responseCode.ResponseCode;
 import com.oxygen.oxygenspring.db.entity.Users;
 import com.oxygen.oxygenspring.db.repository.UsersRepository;
-import com.oxygen.oxygenspring.domain.user.dto.UserReqDto;
-import com.oxygen.oxygenspring.domain.user.dto.UserSignUpReqDto;
+import com.oxygen.oxygenspring.domain.user.dto.request.UserReqDto;
+import com.oxygen.oxygenspring.domain.user.dto.request.UserSignUpReqDto;
+import com.oxygen.oxygenspring.domain.user.dto.response.UserInfoResponseDto;
 import com.oxygen.oxygenspring.domain.user.jwt.provider.JwtAuthTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -44,5 +45,15 @@ public class UserService {
         }
 
         return jwtAuthTokenProvider.createJwtAuthToken(requestDto.getUserId(), user.getUserNickname()).getToken();
+    }
+
+    public UserInfoResponseDto getUserInfo(String userId) {
+        Users user = usersRepository.findByUserId(userId)
+                .orElseThrow(() -> new ApiException(ResponseCode.USER_NOT_FOUND));
+
+        return UserInfoResponseDto.builder()
+                .userId(user.getUserId())
+                .userNickname(user.getUserNickname())
+                .build();
     }
 }

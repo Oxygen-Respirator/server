@@ -1,18 +1,18 @@
 package com.oxygen.oxygenspring.domain.user.controller;
 
 import com.oxygen.oxygenspring._common.response.ApiResponse;
-import com.oxygen.oxygenspring.domain.user.dto.UserReqDto;
-import com.oxygen.oxygenspring.domain.user.dto.UserSignUpReqDto;
+import com.oxygen.oxygenspring.domain.user.dto.request.UserReqDto;
+import com.oxygen.oxygenspring.domain.user.dto.request.UserSignUpReqDto;
+import com.oxygen.oxygenspring.domain.user.dto.response.UserInfoResponseDto;
 import com.oxygen.oxygenspring.domain.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -40,5 +40,13 @@ public class UserController {
     ) {
         response.setHeader("Authorization", userService.login(requestDto));
         return ApiResponse.success();
+    }
+
+    @GetMapping("/info")
+    @Operation(summary = "유저 정보 조회", description = "유저 정보 조회")
+    public ApiResponse<UserInfoResponseDto> getUserInfo(
+            @AuthenticationPrincipal User user
+    ) {
+        return ApiResponse.success(userService.getUserInfo(user.getUsername()));
     }
 }
