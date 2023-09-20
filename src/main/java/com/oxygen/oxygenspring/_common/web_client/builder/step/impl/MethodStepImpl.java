@@ -6,6 +6,7 @@ import io.netty.channel.ChannelOption;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.util.LinkedMultiValueMap;
@@ -63,7 +64,7 @@ public class MethodStepImpl<T> implements MethodStep<T> {
      * @return {@link ConnectStep}
      */
     @Override
-    public ConnectStep post(String baseUrl, String path, T requestBody) {
+    public ConnectStep method(String baseUrl, String path, T requestBody) {
         this.methodType = this.setBaseUrl(!StringUtils.hasText(baseUrl) ? "" : baseUrl)
                 .post()
                 .uri(uriBuilder -> uriBuilder
@@ -80,7 +81,7 @@ public class MethodStepImpl<T> implements MethodStep<T> {
      * @return {@link ConnectStep}
      */
     @Override
-    public ConnectStep post(String baseUrl, MultiValueMap<String, String> params, T requestBody) {
+    public ConnectStep method(String baseUrl, MultiValueMap<String, String> params, T requestBody) {
         this.methodType = this.setBaseUrl(baseUrl)
                 .post()
                 .uri(uriBuilder -> uriBuilder
@@ -113,6 +114,18 @@ public class MethodStepImpl<T> implements MethodStep<T> {
                         .path(path)
                         .queryParams(params == null || params.isEmpty() ? new LinkedMultiValueMap<>() : params)
                         .build());
+        return new ConnectStepImpl(this.methodType);
+    }
+
+    @Override
+    public ConnectStep method(HttpMethod method, String baseUrl, String path, MultiValueMap<String, String> params, T requestBody) {
+        this.methodType = this.setBaseUrl(baseUrl)
+                .method(method)
+                .uri(uriBuilder -> uriBuilder
+                        .path(path)
+                        .queryParams(params)
+                        .build())
+                .bodyValue(requestBody);
         return new ConnectStepImpl(this.methodType);
     }
 }

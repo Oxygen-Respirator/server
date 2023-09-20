@@ -10,32 +10,12 @@ import org.springframework.context.annotation.Configuration;
 @Getter
 @Setter
 public class ApiStatics {
-    private Webhook webhook;
-    private WebhookLog webhookLog;
-    private WebhookReport webhookReport;
-    private WebhookCard webhookCard;
+    private OpenAi openAi;
 
     @Getter
     @Setter
-    public static class Webhook {
+    public static class OpenAi {
         private String url;
-    }
-
-    @Getter
-    @Setter
-    public static class WebhookLog {
-        private String url;
-    }
-
-    @Getter
-    @Setter
-    public static class WebhookReport {
-        private String url;
-    }
-
-    @Getter
-    @Setter
-    public static class WebhookCard {
-        private String url;
+        private String token;
     }
 }

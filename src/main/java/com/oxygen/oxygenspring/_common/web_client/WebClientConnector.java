@@ -2,12 +2,13 @@ package com.oxygen.oxygenspring._common.web_client;
 
 import com.oxygen.oxygenspring._common.web_client.builder.ApiWebClientBuilder;
 import com.oxygen.oxygenspring._common.web_client.statics.ApiStatics;
-import com.oxygen.oxygenspring._common.web_client.statics.HubUrl;
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
+import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import reactor.core.publisher.Mono;
 
 import java.util.Map;
 
@@ -17,20 +18,20 @@ import java.util.Map;
 public class WebClientConnector {
     private final ApiWebClientBuilder webClientBuilder;
     private final ApiStatics statics;
-    private final HubUrl hubUrl;
 
 
-    public String callSoapString(String url, String path, Map<String, String> headers, String requestBody) {
-        return (String) webClientBuilder.request()
-                .post(url, path, requestBody)
-                .connectBlock(headers, String.class)
+    @SuppressWarnings("unchecked")
+    @Builder(builderMethodName = "callOpenApiBuilder", builderClassName = "CallOpenApiBuilder")
+    public <Q, S> S callOpenApi(HttpMethod method, String path, Map<String, String> headers, MultiValueMap<String, String> params, Q requestBody, Class<S> responseType) {
+        if (headers == null) headers = Map.of();
+        headers.put("Authorization", "Bearer " + statics.getOpenAi().getToken());
+
+        if (params == null) params = new LinkedMultiValueMap<>();
+
+        return (S) webClientBuilder.request()
+                .method(method, statics.getOpenAi().getUrl(), path, params, requestBody)
+                .connectBlock(headers, responseType)
                 .toObjectCall();
-    }
-
-    public Mono<?> callSoapStringBySubscribe(String url, String path, Map<String, String> headers, String requestBody) {
-        return webClientBuilder.request()
-                .post(url, path, requestBody)
-                .connectSubscribe(headers, String.class);
     }
 
 }

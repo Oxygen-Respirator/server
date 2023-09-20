@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
-public class ChatResDto {
+public class OpenAiChatResDto {
     @JsonProperty("usage")
     private Usage usage;
     @JsonProperty("choices")

@@ -4,13 +4,17 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
 @NoArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class GptChat {
     @Id
     @Column(name = "id", nullable = false, length = 50)
@@ -37,6 +41,10 @@ public class GptChat {
 
     @OneToMany(mappedBy = "gptChat", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Message> messageList = new ArrayList<>();
+
+    @CreatedDate
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
 
     @Builder
     public GptChat(String id, Users user, String object, String model, Integer totalTokens, Integer completionTokens, Integer promptTokens) {
