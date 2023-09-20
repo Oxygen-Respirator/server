@@ -1,4 +1,4 @@
-package com.oxygen.oxygenspring.domain.user.details;
+package com.oxygen.oxygenspring.domain.user.jwt.details;
 
 import com.oxygen.oxygenspring.db.entity.Users;
 import lombok.Builder;

@@ -2,7 +2,7 @@ package com.oxygen.oxygenspring.domain.user.service;
 
 import com.oxygen.oxygenspring.db.entity.Users;
 import com.oxygen.oxygenspring.db.repository.UsersRepository;
-import com.oxygen.oxygenspring.domain.user.details.UserDetailsImpl;
+import com.oxygen.oxygenspring.domain.user.jwt.details.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

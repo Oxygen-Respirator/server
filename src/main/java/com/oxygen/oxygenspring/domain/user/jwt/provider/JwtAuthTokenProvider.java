@@ -44,7 +44,8 @@ public class JwtAuthTokenProvider {
         if (authToken.tokenValidate()) {
             Claims claims = authToken.getTokenClaims();
             log.debug("claims subject : [{}]", claims.getSubject());
-            User principal = new User(claims.getSubject(), "", new ArrayList<>()); // userDetails 의 user 객체. username, password, authorities 세팅
+
+            User principal = new User(claims.get("userId").toString(), "", new ArrayList<>()); // userDetails 의 user 객체. username, password, authorities 세팅
 
             // 인증이 끝나고 SecurityContextHolder.getContext에 등록될 Authentication(인증) 객체
             return new UsernamePasswordAuthenticationToken(principal, authToken, new ArrayList<>());
