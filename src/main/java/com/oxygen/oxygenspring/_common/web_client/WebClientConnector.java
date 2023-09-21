@@ -2,7 +2,6 @@ package com.oxygen.oxygenspring._common.web_client;
 
 import com.oxygen.oxygenspring._common.web_client.builder.ApiWebClientBuilder;
 import com.oxygen.oxygenspring._common.web_client.statics.ApiStatics;
-import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpMethod;
@@ -21,7 +20,6 @@ public class WebClientConnector {
 
 
     @SuppressWarnings("unchecked")
-    @Builder(builderMethodName = "callOpenApiBuilder", builderClassName = "CallOpenApiBuilder")
     public <Q, S> S callOpenApi(HttpMethod method, String path, Map<String, String> headers, MultiValueMap<String, String> params, Q requestBody, Class<S> responseType) {
         if (headers == null) headers = Map.of();
         headers.put("Authorization", "Bearer " + statics.getOpenAi().getToken());

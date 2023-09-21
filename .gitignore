@@ -42,3 +42,4 @@ out/
 *.yml
 /submodule-data/.idea/
 /logs/
+/src/main/generated/
