@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import com.oxygen.oxygenspring._common.exception.ApiException;
 import com.oxygen.oxygenspring._common.exception.responseCode.ResponseCode;
 import com.oxygen.oxygenspring._common.exception.utils.ExceptionUtils;
+import com.oxygen.oxygenspring.config.properties.PropertiesConfig;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -20,6 +22,7 @@ import java.util.Objects;
 
 @Slf4j
 @RestControllerAdvice
+@RequiredArgsConstructor
 public class GlobalExceptionHandler {
 
     /**
@@ -28,7 +31,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = ApiException.class)
     public ResponseEntity<Object> handleApiException(ApiException e) {
         ExceptionUtils.loggingException(e);
-
+        if (PropertiesConfig.ACTIVE_PROFILE_LIST.contains("dev")) e.printStackTrace();
         return ExceptionUtils.handleExceptionInternal(e.getCode(), e.getCode().getMessage());
     }
 
@@ -39,7 +42,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Object> handleNullPointerException(NullPointerException e) {
         log.error("ᕙ༼◕ ᴥ ◕༽ᕗ 야생의 Null이 나타났다! ᕙ༼◕ ᴥ ◕༽ᕗ ");
         ExceptionUtils.loggingException(e);
-
+        if (PropertiesConfig.ACTIVE_PROFILE_LIST.contains("dev")) e.printStackTrace();
         return ExceptionUtils.handleExceptionInternal(ResponseCode.INTERNAL_SERVER_ERROR, "비어있는 값이 들어올 수 없습니다.");
     }
 
@@ -50,7 +53,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public ResponseEntity<Object> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
         String message = "[" + e.getMethod() + "] 메소드는 지원하지 않습니다. " + e.getSupportedHttpMethods() + " 메소드를 사용해주세요.";
-
+        if (PropertiesConfig.ACTIVE_PROFILE_LIST.contains("dev")) e.printStackTrace();
         return ExceptionUtils.handleExceptionInternal(ResponseCode.INVALID_REQUEST_METHOD_TYPE, message);
     }
 
@@ -61,7 +64,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<Object> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e) {
         String message = "필드명 [" + e.getName() + "]은 [" + Objects.requireNonNull(e.getRequiredType()).getSimpleName() + "]타입입니다. 입력값 : (" + Objects.requireNonNull(e.getValue()).getClass().getSimpleName() + ") " + e.getValue();
-
+        if (PropertiesConfig.ACTIVE_PROFILE_LIST.contains("dev")) e.printStackTrace();
         return ExceptionUtils.handleExceptionInternal(ResponseCode.INVALID_REQUEST_METHOD_TYPE, message);
     }
 
@@ -72,7 +75,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(value = HttpMessageNotReadableException.class)
     public ResponseEntity<Object> handleHttpMessageNotReadableException(HttpMessageNotReadableException e) {
-
+        if (PropertiesConfig.ACTIVE_PROFILE_LIST.contains("dev")) e.printStackTrace();
         String message;
         Throwable throwable = e.getMostSpecificCause();
         ResponseCode responseCode = ResponseCode.INVALID_REQUEST_BODY;
@@ -103,7 +106,7 @@ public class GlobalExceptionHandler {
         String defaultMessage = e.getBindingResult().getAllErrors().get(0).getDefaultMessage();
 
         ExceptionUtils.loggingException(e, defaultMessage);
-
+        if (PropertiesConfig.ACTIVE_PROFILE_LIST.contains("dev")) e.printStackTrace();
         return ExceptionUtils.handleExceptionInternal(ResponseCode.VALIDATION_FAILED, defaultMessage);
     }
 
@@ -114,6 +117,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = Exception.class)
     public ResponseEntity<Object> handleException(Exception e) {
         ExceptionUtils.loggingException(e);
+        if (PropertiesConfig.ACTIVE_PROFILE_LIST.contains("dev")) e.printStackTrace();
 
         return ExceptionUtils.handleExceptionInternal(ResponseCode.INTERNAL_SERVER_ERROR);
     }
