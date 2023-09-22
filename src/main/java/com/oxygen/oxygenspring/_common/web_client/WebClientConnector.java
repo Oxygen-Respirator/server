@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @Log4j2
@@ -21,7 +22,7 @@ public class WebClientConnector {
 
     @SuppressWarnings("unchecked")
     public <Q, S> S callOpenApi(HttpMethod method, String path, Map<String, String> headers, MultiValueMap<String, String> params, Q requestBody, Class<S> responseType) {
-        if (headers == null) headers = Map.of();
+        if (headers == null) headers = new HashMap<>();
         headers.put("Authorization", "Bearer " + statics.getOpenAi().getToken());
 
         if (params == null) params = new LinkedMultiValueMap<>();

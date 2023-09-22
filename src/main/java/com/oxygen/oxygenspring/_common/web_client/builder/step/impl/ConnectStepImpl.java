@@ -18,13 +18,14 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class ConnectStepImpl implements ConnectStep {
 
-    private final WebClient.RequestHeadersSpec<?> methodType;
     private Object response;
+    private final WebClient.RequestHeadersSpec<?> methodType;
 
     /**
      * WebClient의 header와 response class 설정 후 block으로 호출<br>
      * 헤더와 응답값이 존재할 때 사용. (ex. 일반적인 api 호출)<br>
      * 예외처리 포함
+     *
      * @return {@link ResponseStep}
      */
     @Override
@@ -37,8 +38,8 @@ public class ConnectStepImpl implements ConnectStep {
                             clientResponse.bodyToMono(String.class)
                                     .flatMap(msg -> Mono.error(new ApiException(ResponseCode.INTERNAL_SERVER_ERROR, msg))))
                     .bodyToMono(responseType)
-                    .retryWhen(Retry.fixedDelay(3, java.time.Duration.ofSeconds(1))
-                            .doBeforeRetry(before -> log.info("Retry: {} | {}", before.totalRetries(), before.failure())))
+//                    .retryWhen(Retry.fixedDelay(3, java.time.Duration.ofSeconds(1))
+//                            .doBeforeRetry(before -> log.info("Retry: {} | {}", before.totalRetries(), before.failure())))
                     .block();
             return new ResponseStepImpl(this.response);
         } catch (Exception e) {
@@ -51,6 +52,7 @@ public class ConnectStepImpl implements ConnectStep {
      * WebClient의 header와 response class 설정 후 block으로 호출<br>
      * 헤더와 응답값이 존재하지 않을 때 사용. (ex. Google chat webhook api 호출)<br>
      * 예외처리 포함
+     *
      * @return {@link ResponseStep}
      */
     @Override
