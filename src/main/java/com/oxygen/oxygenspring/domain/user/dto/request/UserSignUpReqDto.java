@@ -1,4 +1,4 @@
-package com.oxygen.oxygenspring.domain.user.dto;
+package com.oxygen.oxygenspring.domain.user.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
