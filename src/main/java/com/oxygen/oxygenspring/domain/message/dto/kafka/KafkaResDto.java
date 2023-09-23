@@ -10,6 +10,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 public class KafkaResDto {
-    private Integer score;
-    private String message;
+    private String score;
+    private String answer;
+    private String keyword;
+    private String tailQuestion;
+    private String etc;
 }

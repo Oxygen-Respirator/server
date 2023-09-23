@@ -8,7 +8,6 @@ import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ChatController {
     private final ChatService chatService;
 
-    @PostMapping("/api/chat")
+    //    @PostMapping("/api/chat")
     public ApiResponse<OpenAiChatResDto> chat(
             @AuthenticationPrincipal User userDetails,
             @RequestBody @Nullable ChatReqDto reqDto

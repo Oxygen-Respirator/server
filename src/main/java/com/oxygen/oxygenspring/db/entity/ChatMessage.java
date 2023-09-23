@@ -9,19 +9,28 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
-public class Message extends TimestampedOnlyCreated {
+public class ChatMessage extends TimestampedOnlyCreated {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "role", nullable = false)
-    private String role;
-
-    @Column(name = "message", nullable = false)
-    private String message;
+    @Column(name = "user_message")
+    private String userMessage;
 
     @Column(name = "score")
     private Integer score;
+
+    @Column(name = "answer")
+    private String answer;
+
+    @Column(name = "keyword")
+    private String keyword;
+
+    @Column(name = "tail_question")
+    private String tailQuestion;
+
+    @Column(name = "etc")
+    private String etc;
 
     @Column(name = "is_resolve")
     private Boolean isResolve;
@@ -32,11 +41,15 @@ public class Message extends TimestampedOnlyCreated {
     @ManyToOne(fetch = FetchType.LAZY)
     private Users users;
 
+
     @Builder
-    public Message(String role, String message, Integer score, Boolean isResolve, LangGroup langGroup, Users users) {
-        this.role = role;
-        this.message = message;
+    public ChatMessage(String userMessage, Integer score, String answer, String keyword, String tailQuestion, String etc, Boolean isResolve, LangGroup langGroup, Users users) {
+        this.answer = answer;
+        this.keyword = keyword;
+        this.tailQuestion = tailQuestion;
+        this.userMessage = userMessage;
         this.score = score;
+        this.etc = etc;
         this.isResolve = isResolve;
         this.langGroup = langGroup;
         this.users = users;

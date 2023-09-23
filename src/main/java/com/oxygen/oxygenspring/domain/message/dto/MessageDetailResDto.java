@@ -14,7 +14,9 @@ public class MessageDetailResDto {
     private Integer score;
     private Boolean isResolve;
     private String langGroupName;
-    private String role;
-    private String message;
+    private String userMessage;
+    private String answer;
+    private String keyword;
+    private String tailQuestion;
     private String createdAt;
 }

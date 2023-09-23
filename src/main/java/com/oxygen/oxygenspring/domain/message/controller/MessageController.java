@@ -22,7 +22,7 @@ public class MessageController {
             @AuthenticationPrincipal User userDetails,
             @PathVariable("group-id") Long groupId
     ) {
-        List<MessageDetailResDto> data = messageService.getDetailMessage(groupId);
+        List<MessageDetailResDto> data = messageService.getDetailMessage(groupId, userDetails.getUsername());
 
         return ApiResponse.success(data);
     }

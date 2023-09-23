@@ -9,8 +9,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+import static com.oxygen.oxygenspring.db.entity.QChatMessage.chatMessage;
 import static com.oxygen.oxygenspring.db.entity.QLangGroup.langGroup;
-import static com.oxygen.oxygenspring.db.entity.QMessage.message1;
 import static com.oxygen.oxygenspring.db.entity.QUsers.users;
 
 @Repository
@@ -22,16 +22,15 @@ public class RankJoinRepository {
     public List<RankListResDto> getRankList(Long groupId) {
         return jpaQueryFactory.select(
                         new QRankListResDto(
-                                message1.users.userNickname,
-                                message1.id.count().intValue(),
-                                message1.score.sum()
+                                chatMessage.users.userNickname,
+                                chatMessage.id.count().intValue(),
+                                chatMessage.score.sum()
                         ))
-                .from(message1)
-                .join(users).on(message1.users.eq(users))
-                .join(langGroup).on(message1.langGroup.eq(langGroup))
+                .from(chatMessage)
+                .join(users).on(chatMessage.users.eq(users))
+                .join(langGroup).on(chatMessage.langGroup.eq(langGroup))
                 .where(langGroup.id.eq(groupId)
-                        .and(message1.role.eq("assistant"))
-                        .and(message1.isResolve.eq(true))
+                        .and(chatMessage.isResolve.eq(true))
                 )
                 .groupBy(users)
                 .orderBy(QueryDslUtil.OrderByNull.getDefault())

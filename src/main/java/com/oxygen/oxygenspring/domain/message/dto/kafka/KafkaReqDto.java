@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 public class KafkaReqDto {
-    private String userId;
-    private String lang;
+    private Long userId;
+    private Long lang;
     private String message;
 }

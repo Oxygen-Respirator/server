@@ -25,11 +25,19 @@ public class Utils {
         return text.toString();
     }
 
-    public static <T> String objectTojson(T object, ObjectMapper objectMapper) {
+    public static <T> String objectToJson(T object, ObjectMapper objectMapper) {
         try {
             return objectMapper.writeValueAsString(object);
         } catch (JsonProcessingException e) {
             throw new ApiException(ResponseCode.INTERNAL_SERVER_ERROR, "Object To Json String 변환 실패 - " + e.getMessage());
+        }
+    }
+
+    public static <T> T jsonToObject(String json, Class<T> clazz, ObjectMapper objectMapper) {
+        try {
+            return objectMapper.readValue(json, clazz);
+        } catch (JsonProcessingException e) {
+            throw new ApiException(ResponseCode.INTERNAL_SERVER_ERROR, "Json String To Object 변환 실패 - " + e.getMessage());
         }
     }
 }
