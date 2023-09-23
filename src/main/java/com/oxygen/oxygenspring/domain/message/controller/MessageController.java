@@ -28,12 +28,25 @@ public class MessageController {
     }
 
     @PostMapping("/{group-id}")
-    public ApiResponse<MessageDetailResDto> createMessage(
+    public ApiResponse<String> createMessage(
             @AuthenticationPrincipal User userDetails,
             @PathVariable("group-id") Long groupId,
             @RequestBody MessageCreateReqDto reqDto
     ) {
-        MessageDetailResDto data = messageService.createMessage(userDetails, groupId, reqDto);
+//        MessageDetailResDto data = messageService.createMessage(userDetails, groupId, reqDto);
+
+        String data = """
+                {
+                    "id": 0,
+                    "score": 57,
+                    "isResolve": true,
+                    "langGroupName": "Java",
+                    "userMessage": "여기에 유저의 질문이 그대로 들어옵니당",
+                    "answer": "질문에 대한 답변",
+                    "keyword": "키워드",
+                    "tailQuestion": "꼬리질문",
+                    "createdAt": "생성일자"
+                }""";
 
         return ApiResponse.success(data);
     }
