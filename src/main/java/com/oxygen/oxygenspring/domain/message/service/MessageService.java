@@ -42,8 +42,7 @@ public class MessageService {
         Random random = new Random();
 
         int ran = random.nextInt(101);
-        boolean isResolve = true;
-        if (ran < 51) isResolve = false;
+        boolean isResolve = ran >= 51;
 
         Message message = Message.builder()
                 .langGroup(new LangGroup(groupId))
