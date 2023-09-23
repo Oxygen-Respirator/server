@@ -26,6 +26,8 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 @Service
 @RequiredArgsConstructor
@@ -83,17 +85,23 @@ public class MessageService {
 
         try {
             kafkaTemplate.send(message).get();
-        } catch (InterruptedException | ExecutionException e) {
+        } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            throw new ApiException(ResponseCode.KAFKA_ERROR, "카프카 에러가 발생했습니다." + e.getMessage());
+            throw new ApiException(ResponseCode.KAFKA_ERROR);
+        } catch (ExecutionException e) {
+            throw new ApiException(ResponseCode.KAFKA_ERROR);
         }
 
         String response;
         try {
-            response = Utils.unicodeDecode(responseFuture.get());
-        } catch (InterruptedException | ExecutionException e) {
+            response = Utils.unicodeDecode(responseFuture.get(10, TimeUnit.SECONDS));
+        } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            throw new ApiException(ResponseCode.KAFKA_ERROR, "카프카 에러가 발생했습니다." + e.getMessage());
+            throw new ApiException(ResponseCode.KAFKA_ERROR, "카프카 에러가 발생했습니다.");
+        } catch (ExecutionException e) {
+            throw new ApiException(ResponseCode.KAFKA_ERROR, "카프카 에러가 발생했습니다.");
+        } catch (TimeoutException e) {
+            throw new ApiException(ResponseCode.KAFKA_ERROR, "GPT Connector에서 응답이 오지 않습니다.");
         }
 
         KafkaResDto kafkaResDto = Utils.jsonToObject(response, KafkaResDto.class, objectMapper);
