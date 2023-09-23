@@ -56,4 +56,9 @@ public class UserService {
                 .userNickname(user.getUserNickname())
                 .build();
     }
+
+    public Users getUser(String userId) {
+        return usersRepository.findByUserId(userId)
+                .orElseThrow(() -> new ApiException(ResponseCode.USER_NOT_FOUND));
+    }
 }

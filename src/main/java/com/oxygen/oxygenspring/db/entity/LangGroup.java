@@ -22,5 +22,8 @@ public class LangGroup extends TimestampedOnlyCreated {
         this.name = name;
     }
 
-    
+
+    public LangGroup(Long groupId) {
+        this.id = groupId;
+    }
 }

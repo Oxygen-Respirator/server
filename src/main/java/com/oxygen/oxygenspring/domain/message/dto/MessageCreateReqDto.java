@@ -9,12 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor
-public class MessageDetailResDto {
-    private Long id;
-    private Integer score;
-    private Boolean isResolve;
-    private String langGroupName;
-    private String role;
+public class MessageCreateReqDto {
     private String message;
-    private String createdAt;
 }

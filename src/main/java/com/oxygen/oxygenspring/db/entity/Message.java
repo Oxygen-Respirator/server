@@ -23,7 +23,7 @@ public class Message extends TimestampedOnlyCreated {
     @Column(name = "score")
     private Integer score;
 
-    @Column(name = "is_resolve", nullable = false)
+    @Column(name = "is_resolve")
     private Boolean isResolve;
 
     @ManyToOne(fetch = FetchType.LAZY)
