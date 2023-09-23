@@ -73,10 +73,13 @@ public class MessageService {
         LangGroup langGroup = langGroupRepository.findById(groupId)
                 .orElseThrow(() -> new ApiException(ResponseCode.RESOURCE_NOT_FOUND, "해당 그룹이 존재하지 않습니다. id : " + groupId));
 
+
+        Long entityCnt = messageRepository.countByLangGroupIdAndUsers_UserId(groupId, user.getUserId());
         KafkaReqDto kafkaReqDto = KafkaReqDto.builder()
                 .userId(user.getId())
                 .lang(langGroup.getId())
                 .message(reqDto.getMessage())
+                .isFirst(entityCnt == 0)
                 .build();
 
         String request = Utils.objectToJson(kafkaReqDto, objectMapper);

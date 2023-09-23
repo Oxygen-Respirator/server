@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface MessageRepository extends JpaRepository<ChatMessage, Long> {
     List<ChatMessage> findAllByLangGroupIdAndUsers_UserId(Long groupId, String userId);
+
+    Long countByLangGroupIdAndUsers_UserId(Long groupId, String userId);
 }

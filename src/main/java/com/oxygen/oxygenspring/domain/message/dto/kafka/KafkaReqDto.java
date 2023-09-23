@@ -13,4 +13,5 @@ public class KafkaReqDto {
     private Long userId;
     private Long lang;
     private String message;
+    private boolean isFirst;
 }
