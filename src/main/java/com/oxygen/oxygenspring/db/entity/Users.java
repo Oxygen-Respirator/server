@@ -26,10 +26,18 @@ public class Users extends Timestamped {
     @Column(name = "user_nickname", nullable = false)
     private String userNickname;
 
+    @Column(name = "remain_answer_count")
+    private Integer remainAnswerCount;
+
+    @Column(name = "max_answer_count")
+    private Integer maxAnswerCount;
+
     @Builder
-    public Users(String userId, String userPw, String userNickname) {
+    public Users(String userId, String userPw, String userNickname, Integer maxAnswerCount) {
         this.userId = userId;
         this.userPw = userPw;
         this.userNickname = userNickname;
+        this.remainAnswerCount = maxAnswerCount;
+        this.maxAnswerCount = maxAnswerCount;
     }
 }

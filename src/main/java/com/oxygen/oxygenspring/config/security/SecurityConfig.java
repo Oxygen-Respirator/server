@@ -79,7 +79,7 @@ public class SecurityConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("https://oxygen-ai.site", "https://api.oxygen-ai.site", "http://localhost", "http://localhost:43000"));
+        configuration.setAllowedOrigins(Arrays.asList("https://www.oxygen-ai.site", "https://oxygen-ai.site", "https://api.oxygen-ai.site", "http://localhost:43000"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.addExposedHeader("Authorization");

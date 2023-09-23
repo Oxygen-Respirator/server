@@ -32,6 +32,7 @@ public class UserService {
                 .userId(requestDto.getUserId())
                 .userPw(passwordEncoder.encode(requestDto.getUserPw()))
                 .userNickname(requestDto.getUserNickname())
+                .maxAnswerCount(10)
                 .build());
     }
 
@@ -54,6 +55,8 @@ public class UserService {
         return UserInfoResponseDto.builder()
                 .userId(user.getUserId())
                 .userNickname(user.getUserNickname())
+                .remainAnswerCount(user.getRemainAnswerCount())
+                .maxAnswerCount(user.getMaxAnswerCount())
                 .build();
     }
 

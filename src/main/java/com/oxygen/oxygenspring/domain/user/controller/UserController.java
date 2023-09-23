@@ -49,4 +49,5 @@ public class UserController {
     ) {
         return ApiResponse.success(userService.getUserInfo(user.getUsername()));
     }
+
 }

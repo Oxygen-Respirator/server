@@ -9,10 +9,14 @@ import lombok.NoArgsConstructor;
 public class UserInfoResponseDto {
     private String userId;
     private String userNickname;
+    private Integer remainAnswerCount;
+    private Integer maxAnswerCount;
 
     @Builder
-    public UserInfoResponseDto(String userId, String userNickname) {
+    public UserInfoResponseDto(String userId, String userNickname, Integer remainAnswerCount, Integer maxAnswerCount) {
         this.userId = userId;
         this.userNickname = userNickname;
+        this.remainAnswerCount = remainAnswerCount;
+        this.maxAnswerCount = maxAnswerCount;
     }
 }

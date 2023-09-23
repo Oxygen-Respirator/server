@@ -33,6 +33,7 @@ public enum ResponseCode {
     /* 500 */
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "500_0", "서버에 문제가 발생했습니다. 관리자에게 문의해주세요."),
     GOOGLE_CHAT_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "500_1", "Google chat 메시지 전송에 실패하였습니다."),
+    KAFKA_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "500_2", "Kafka 통신에 실패하였습니다."),
     TOKEN_VALID_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "500_9", "토큰 생성에 실패하였습니다.");
 
     private final HttpStatus status;
