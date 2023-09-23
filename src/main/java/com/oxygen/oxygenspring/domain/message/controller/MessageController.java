@@ -4,6 +4,7 @@ import com.oxygen.oxygenspring._common.response.ApiResponse;
 import com.oxygen.oxygenspring.domain.message.dto.MessageCreateReqDto;
 import com.oxygen.oxygenspring.domain.message.dto.MessageDetailResDto;
 import com.oxygen.oxygenspring.domain.message.service.MessageService;
+import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
@@ -20,7 +21,7 @@ public class MessageController {
     @GetMapping("")
     public ApiResponse<List<MessageDetailResDto>> getMessage(
             @AuthenticationPrincipal User userDetails,
-            @RequestParam("group-id") Long groupId
+            @RequestParam("group-id") @Nullable Long groupId
     ) {
         List<MessageDetailResDto> data = messageService.getDetailMessage(groupId, userDetails.getUsername());
 

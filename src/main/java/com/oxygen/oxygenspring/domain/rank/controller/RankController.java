@@ -3,6 +3,7 @@ package com.oxygen.oxygenspring.domain.rank.controller;
 import com.oxygen.oxygenspring._common.response.ApiResponse;
 import com.oxygen.oxygenspring.domain.rank.dto.RankListResDto;
 import com.oxygen.oxygenspring.domain.rank.service.RankService;
+import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +20,7 @@ public class RankController {
 
     @GetMapping("")
     public ApiResponse<List<RankListResDto>> getRankList(
-            @RequestParam(value = "group-id") Long groupId
+            @RequestParam(value = "group-id") @Nullable Long groupId
     ) {
         List<RankListResDto> data = rankService.getRankList(groupId);
 
