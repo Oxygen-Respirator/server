@@ -42,7 +42,12 @@ public class MessageService {
     private final ObjectMapper objectMapper;
 
     public List<MessageDetailResDto> getDetailMessage(Long groupId, String userId) {
-        List<ChatMessage> groupChatMessageList = messageRepository.findAllByLangGroupIdAndUsers_UserId(groupId, userId);
+        List<ChatMessage> groupChatMessageList;
+        if (groupId != null) {
+            groupChatMessageList = messageRepository.findAllByLangGroupIdAndUsers_UserId(groupId, userId);
+        } else {
+            groupChatMessageList = messageRepository.findAllByUsers_UserId(userId);
+        }
 
         return groupChatMessageList.stream()
                 .map(entity -> MessageDetailResDto.builder()
@@ -76,8 +81,7 @@ public class MessageService {
 
         Long entityCnt = messageRepository.countByLangGroupIdAndUsers_UserId(groupId, user.getUserId());
         KafkaReqDto kafkaReqDto = KafkaReqDto.builder()
-                .userId(user.getId())
-                .lang(langGroup.getId())
+                .lang(langGroup.getName())
                 .message(reqDto.getMessage())
                 .isFirst(entityCnt == 0)
                 .build();
@@ -113,6 +117,7 @@ public class MessageService {
         }
 
         KafkaResDto kafkaResDto = Utils.jsonToObject(response, KafkaResDto.class, objectMapper);
+
 
         int score = Integer.parseInt(kafkaResDto.getScore());
         ChatMessage resChatMessageEntity = ChatMessage.builder()

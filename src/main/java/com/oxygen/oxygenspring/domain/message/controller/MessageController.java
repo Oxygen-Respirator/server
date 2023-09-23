@@ -17,10 +17,10 @@ import java.util.List;
 public class MessageController {
     private final MessageService messageService;
 
-    @GetMapping("/{group-id}")
+    @GetMapping("")
     public ApiResponse<List<MessageDetailResDto>> getMessage(
             @AuthenticationPrincipal User userDetails,
-            @PathVariable("group-id") Long groupId
+            @RequestParam("group-id") Long groupId
     ) {
         List<MessageDetailResDto> data = messageService.getDetailMessage(groupId, userDetails.getUsername());
 
