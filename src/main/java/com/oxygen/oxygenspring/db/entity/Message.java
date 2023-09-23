@@ -1,44 +1,44 @@
 package com.oxygen.oxygenspring.db.entity;
 
+import com.oxygen.oxygenspring.db.entity.utils.TimestampedOnlyCreated;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @NoArgsConstructor
-public class Message {
+public class Message extends TimestampedOnlyCreated {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "index", nullable = false)
-    private Integer index;
+    @Column(name = "role", nullable = false)
+    private String role;
 
     @Column(name = "message", nullable = false)
     private String message;
 
-    @Column(name = "finish_reason", nullable = false, length = 30)
-    private String finishReason;
+    @Column(name = "score")
+    private Integer score;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private GptChat gptChat;
+    @Column(name = "is_resolve", nullable = false)
+    private Boolean isResolve;
 
-    @CreatedDate
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private LangGroup langGroup;
 
-    public Message(Integer index, String message, String finishReason, GptChat gptChat) {
-        this.index = index;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Users users;
+
+    @Builder
+    public Message(String role, String message, Integer score, Boolean isResolve, LangGroup langGroup, Users users) {
+        this.role = role;
         this.message = message;
-        this.finishReason = finishReason;
-        gptChat.addMessage(this);
-    }
-
-    public void regGptChat(GptChat gptChat) {
-        this.gptChat = gptChat;
+        this.score = score;
+        this.isResolve = isResolve;
+        this.langGroup = langGroup;
+        this.users = users;
     }
 }
