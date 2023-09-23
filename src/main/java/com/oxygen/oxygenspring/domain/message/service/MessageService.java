@@ -63,7 +63,7 @@ public class MessageService {
         Users user = userService.getUser(userDetails.getUsername());
 
         if (user.getRemainAnswerCount() <= 0) {
-            throw new ApiException(ResponseCode.RESOURCE_NOT_FOUND, "남은 답변 횟수가 없습니다.");
+            throw new ApiException(ResponseCode.REQUIRED_ANSWER_COUNT);
         }
 
         String correlationId = UUID.randomUUID().toString();
@@ -125,6 +125,8 @@ public class MessageService {
                 .build();
 
         messageRepository.saveAndFlush(resChatMessageEntity);
+
+        user.minusRemainAnswerCount();
 
         return MessageDetailResDto.builder()
                 .id(resChatMessageEntity.getId())

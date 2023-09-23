@@ -40,4 +40,8 @@ public class Users extends Timestamped {
         this.remainAnswerCount = maxAnswerCount;
         this.maxAnswerCount = maxAnswerCount;
     }
+
+    public void minusRemainAnswerCount() {
+        this.remainAnswerCount--;
+    }
 }

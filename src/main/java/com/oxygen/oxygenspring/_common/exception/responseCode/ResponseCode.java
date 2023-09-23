@@ -13,6 +13,7 @@ public enum ResponseCode {
     VALIDATION_FAILED(HttpStatus.BAD_REQUEST, "400_0", "유효성 검사에 실패했습니다."),
     INVALID_REQUEST_BODY(HttpStatus.BAD_REQUEST, "400_1", "Request body가 잘못되었습니다."),
     INVALID_REQUEST_METHOD_TYPE(HttpStatus.BAD_REQUEST, "400_2", "Request Method가 잘못되었습니다."),
+    REQUIRED_ANSWER_COUNT(HttpStatus.BAD_REQUEST, "400_3", "남은 답변 횟수가 부족합니다."),
 
     /* 401 */
     WRONG_TYPE_SIGNATURE(HttpStatus.UNAUTHORIZED, "401_0", "잘못된 JWT 서명입니다."),
