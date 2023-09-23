@@ -12,10 +12,10 @@ public class HistoryListResDto {
     private Integer solvedCount;
     private Integer triedCount;
     private Integer rank;
-    private String totalScore;
+    private Integer totalScore;
 
     @QueryProjection
-    public HistoryListResDto(Integer solvedCount, Integer triedCount, Integer rank, String totalScore) {
+    public HistoryListResDto(Integer solvedCount, Integer triedCount, Integer rank, Integer totalScore) {
         this.solvedCount = solvedCount;
         this.triedCount = triedCount;
         this.rank = rank;

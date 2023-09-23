@@ -3,6 +3,7 @@ package com.oxygen.oxygenspring.db.repository.join;
 import com.oxygen.oxygenspring._common.querydsl.QueryDslUtil;
 import com.oxygen.oxygenspring.domain.rank.dto.QRankListResDto;
 import com.oxygen.oxygenspring.domain.rank.dto.RankListResDto;
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -20,6 +21,14 @@ public class RankJoinRepository {
 
 
     public List<RankListResDto> getRankList(Long groupId) {
+        BooleanBuilder builder = new BooleanBuilder();
+
+        if (groupId != null) {
+            builder.and(langGroup.id.eq(groupId));
+        }
+
+        builder.and(chatMessage.isResolve.eq(true));
+
         return jpaQueryFactory.select(
                         new QRankListResDto(
                                 chatMessage.users.userNickname,
@@ -29,11 +38,11 @@ public class RankJoinRepository {
                 .from(chatMessage)
                 .join(users).on(chatMessage.users.eq(users))
                 .join(langGroup).on(chatMessage.langGroup.eq(langGroup))
-                .where(langGroup.id.eq(groupId)
-                        .and(chatMessage.isResolve.eq(true))
-                )
+                .where(builder)
                 .groupBy(users)
                 .orderBy(QueryDslUtil.OrderByNull.getDefault())
                 .fetch();
     }
+
+
 }
