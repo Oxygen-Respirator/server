@@ -60,11 +60,16 @@ public class MessageService {
     }
 
     public MessageDetailResDto createMessage(User userDetails, Long groupId, MessageCreateReqDto reqDto) {
+        Users user = userService.getUser(userDetails.getUsername());
+
+        if (user.getRemainAnswerCount() <= 0) {
+            throw new ApiException(ResponseCode.RESOURCE_NOT_FOUND, "남은 답변 횟수가 없습니다.");
+        }
+
         String correlationId = UUID.randomUUID().toString();
         CompletableFuture<String> responseFuture = new CompletableFuture<>();
         messageConsumer.register(correlationId, responseFuture);
 
-        Users user = userService.getUser(userDetails.getUsername());
         LangGroup langGroup = langGroupRepository.findById(groupId)
                 .orElseThrow(() -> new ApiException(ResponseCode.RESOURCE_NOT_FOUND, "해당 그룹이 존재하지 않습니다. id : " + groupId));
 

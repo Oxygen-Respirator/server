@@ -45,8 +45,8 @@ public class TraceAspect {
 
         // RequestBody 가져 오기
         JsonNode requestBody = new ObjectNode(JsonNodeFactory.instance);
-        for (Object arg : joinPoint.getArgs()) {
-            requestBody = om.convertValue(arg, JsonNode.class);
+        if (joinPoint.getArgs() != null) {
+            requestBody = om.convertValue(joinPoint.getArgs()[0], JsonNode.class);
         }
 
 
