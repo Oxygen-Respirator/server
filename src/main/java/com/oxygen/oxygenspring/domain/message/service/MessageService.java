@@ -71,7 +71,6 @@ public class MessageService {
         }
         String value = result.getProducerRecord().value();
 
-
         Message message = Message.builder()
                 .langGroup(langGroup)
                 .role("user")
