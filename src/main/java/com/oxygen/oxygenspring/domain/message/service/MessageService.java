@@ -106,7 +106,7 @@ public class MessageService {
 
         String response;
         try {
-            response = Utils.unicodeDecode(responseFuture.get(10, TimeUnit.SECONDS));
+            response = Utils.unicodeDecode(responseFuture.get(100, TimeUnit.SECONDS));
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             throw new ApiException(ResponseCode.KAFKA_ERROR, "카프카 에러가 발생했습니다.");
